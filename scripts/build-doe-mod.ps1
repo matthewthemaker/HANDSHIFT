@@ -11,7 +11,7 @@ Write-Host "HANDSHIFT no-Unity build"
 Write-Host "This builds a loader compatibility probe, not a finished Dungeons of Eternity hand-control mod."
 
 if (-not (Get-Command dotnet -ErrorAction SilentlyContinue)) {
-    throw ".NET SDK not found. Install the .NET 6 SDK (or a compatible SDK capable of targeting net6.0), then rerun this script."
+    throw ".NET SDK not found. Use the .NET 8 SDK (or a newer SDK capable of targeting net8.0), then rerun this script."
 }
 if (-not $env:HANDSHIFT_LEMONLOADER_DIR) {
     throw "Set HANDSHIFT_LEMONLOADER_DIR to the folder containing MelonLoader.dll from the exact LemonLoader release you installed."
@@ -31,7 +31,7 @@ New-Item -ItemType Directory -Force -Path $OutputDirectory | Out-Null
 dotnet build $project -c $Configuration -p:LemonLoaderDir="$env:HANDSHIFT_LEMONLOADER_DIR"
 if ($LASTEXITCODE -ne 0) { throw "Compilation failed. No package was created." }
 
-$builtDll = Join-Path $root "DoEMod\bin\$Configuration\net6.0\HANDSHIFT.DoE.dll"
+$builtDll = Join-Path $root "DoEMod\bin\$Configuration\net8.0\HANDSHIFT.DoE.dll"
 if (-not (Test-Path $builtDll)) { throw "Build reported success but the expected DLL was not found." }
 
 $packageRoot = Join-Path $OutputDirectory "HANDSHIFT-DoE-Probe"
