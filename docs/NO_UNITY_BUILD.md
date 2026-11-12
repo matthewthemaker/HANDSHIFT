@@ -15,7 +15,7 @@ HANDSHIFT now has a command-line C# build path for a **loader compatibility prob
 
 ## Requirements
 - Windows PowerShell 5.1 or PowerShell 7.
-- .NET 6 SDK (or compatible SDK that can target net6.0).
+- .NET 8 SDK (or a newer SDK capable of targeting net8.0).
 - A locally installed, exact LemonLoader release containing `MelonLoader.dll`.
 - Exact DoE Android package ID and version/build, collected from the user's own installation.
 - For optional install script: Android platform-tools and an authorized USB debugging connection.
