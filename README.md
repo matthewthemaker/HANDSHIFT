@@ -21,7 +21,9 @@ Important: QuestLab is not a game overlay or controller emulator. A normal third
 - DoE-Mod: game-specific research and adapter boundary.
 - docs: build, compatibility and privacy notes.
 
-## Build status
-Source project and CI workflow template are included. No APK is attached yet: this environment does not have Unity Editor, Android Build Support or a configured Unity license. See docs/QUEST_BUILD.md.
+## No-Unity build path (new)
+A command-line C# project now exists under `DoEMod/`, with PowerShell build and optional ADB-copy scripts under `scripts/`. It does not require Unity Hub or the Unity Editor. The first output is deliberately a **LemonLoader compatibility probe**, not a functional hand-tracking gameplay mod. It requires the exact local LemonLoader assembly plus verified DoE package ID and version. See `docs/NO_UNITY_BUILD.md`.
+
+The original `QuestLab/` remains a separate Unity-based research prototype. No finished DoE gameplay mod or tested APK is attached yet. Do not treat the probe as a working mod.
 
 Do not patch your only copy of the game. Back up first. Do not distribute proprietary game APKs, assemblies or assets.
