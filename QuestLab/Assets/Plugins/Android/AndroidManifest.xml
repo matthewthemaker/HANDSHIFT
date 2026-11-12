@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.handshift.questlab">
+    <uses-permission android:name="com.oculus.permission.HAND_TRACKING" />
+    <uses-feature android:name="oculus.software.handtracking" android:required="false" />
+    <uses-permission android:name="horizonos.permission.HEADSET_CAMERA" />
+    <application>
+        <meta-data android:name="com.oculus.handtracking.frequency" android:value="HIGH" />
+    </application>
+</manifest>
