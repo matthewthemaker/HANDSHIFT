@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>HANDSHIFT.DoE</AssemblyName>
+    <RootNamespace>HANDSHIFT.DoE</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LemonLoaderDir Condition="'$(LemonLoaderDir)' == ''">$(HANDSHIFT_LEMONLOADER_DIR)</LemonLoaderDir>
+  </PropertyGroup>
+  <ItemGroup Condition="Exists('$(LemonLoaderDir)/MelonLoader.dll')">
+    <Reference Include="MelonLoader">
+      <HintPath>$(LemonLoaderDir)/MelonLoader.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+  <Target Name="RequireLoaderReferences" BeforeTargets="ResolveReferences">
+    <Error Condition="!Exists('$(LemonLoaderDir)/MelonLoader.dll')"
+           Text="Missing MelonLoader.dll. Set HANDSHIFT_LEMONLOADER_DIR to the folder containing the exact loader's MelonLoader.dll. This project does not download or bundle the loader." />
+  </Target>
+</Project>
