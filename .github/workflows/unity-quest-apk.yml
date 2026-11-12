@@ -1,0 +1,26 @@
+name: Build HANDSHIFT Quest Lab APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-quest-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Unity Android project
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: QuestLab
+          targetPlatform: Android
+          buildName: HANDSHIFT-QuestLab
+          buildsPath: build
+          androidAppBundle: false
+      - uses: actions/upload-artifact@v4
+        with:
+          name: HANDSHIFT-QuestLab-APK
+          path: build/**/*.apk
