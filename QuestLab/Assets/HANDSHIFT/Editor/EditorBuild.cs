@@ -30,6 +30,10 @@ namespace HandShift.Quest.Editor
             var tracking = rig.AddComponent<HandShiftHandTracker>();
             var visualizer = rig.AddComponent<HandJointVisualizer>();
             var reality = rig.AddComponent<RealitySenseWorker>();
+            var cameraPermission = rig.AddComponent<CameraPermissionGate>();
+            var serializedPermission = new SerializedObject(cameraPermission);
+            serializedPermission.FindProperty("worker").objectReferenceValue = reality;
+            serializedPermission.ApplyModifiedPropertiesWithoutUndo();
             var gameFirst = rig.AddComponent<GameFirstRuntime>();
 
             var serializedVisualizer = new SerializedObject(visualizer);
