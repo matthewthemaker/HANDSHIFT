@@ -1,19 +1,20 @@
 using System.Collections;
+using System.Reflection;
 using UnityEngine;
-using Meta.XR;
 
 namespace HandShift.Quest
 {
     /// Background-only camera processing. Never creates a preview or renderer.
-    /// Requires MRUK PassthroughCameraAccess on Quest 3/3S.
+    /// Add Meta XR MRUK PassthroughCameraAccess and assign it in the Inspector.
     public sealed class RealitySenseWorker : MonoBehaviour
     {
-        [SerializeField] private PassthroughCameraAccess cameraAccess;
+        [SerializeField] private MonoBehaviour cameraAccessComponent;
         [SerializeField, Range(1, 10)] private int sampleEveryNFrames = 5;
-
         public bool IsRunning { get; private set; }
         private bool permissionGranted;
         private int frameCounter;
+        private PropertyInfo isPlayingProperty;
+        private MethodInfo getTextureMethod;
 
         public void SetPermissionGranted(bool granted)
         {
@@ -27,7 +28,11 @@ namespace HandShift.Quest
 
         private void StartProcessing()
         {
-            if (IsRunning || cameraAccess == null || !permissionGranted) return;
+            if (IsRunning || cameraAccessComponent == null || !permissionGranted) return;
+            var type = cameraAccessComponent.GetType();
+            isPlayingProperty = type.GetProperty("IsPlaying");
+            getTextureMethod = type.GetMethod("GetTexture", BindingFlags.Instance | BindingFlags.Public);
+            if (isPlayingProperty == null || getTextureMethod == null) return;
             IsRunning = true;
             StartCoroutine(ProcessLoop());
         }
@@ -44,11 +49,11 @@ namespace HandShift.Quest
             {
                 yield return null;
                 if (++frameCounter % sampleEveryNFrames != 0) continue;
-                if (cameraAccess == null || !cameraAccess.IsPlaying) continue;
-
-                // Obtain only an in-memory texture reference. No UI, material or renderer uses it.
-                // Async GPU readback / native CV processing is the next implementation step.
-                var frame = cameraAccess.GetTexture();
+                if (cameraAccessComponent == null) continue;
+                if (!(bool)isPlayingProperty.GetValue(cameraAccessComponent)) continue;
+                // Texture is held in memory only; no UI, material, renderer or preview references it.
+                // Async GPU readback / native CV analysis is the next implementation step.
+                var frame = getTextureMethod.Invoke(cameraAccessComponent, null) as Texture;
                 if (frame == null) continue;
                 yield return null;
             }
